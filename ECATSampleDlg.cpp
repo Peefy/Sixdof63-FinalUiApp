@@ -156,9 +156,10 @@ double lpfAccWn = 0.5;
 double hpfAngleSpdWn = 0.2;
 
 int visionCtrlComand = 0;
+int isRecieveData = 0;
 
 CRITICAL_SECTION cs;
-CRITICAL_SECTION csdata;
+//CRITICAL_SECTION csdata;
 CRITICAL_SECTION ctrlCommandLockobj;
 DataPackageDouble visionData = {0};
 DataPackageDouble lastData = {0};
@@ -180,7 +181,6 @@ DWORD WINAPI SensorInfoThread(LPVOID pParam)
 		vision.SendData(false, status, data.X / 10.0, data.Y / 10.0, 
 			data.Z / 10.0, data.Roll / 100.0, data.Yaw / 100.0, data.Pitch / 100.0);	
 		LeaveCriticalSection(&cs);
-		Sleep(DATA_BUFFER_THREAD_DELAY);
 		Sleep(SENSOR_THREAD_DELAY);
 	}
 	return 0;
@@ -247,7 +247,7 @@ void VisionDataDeal()
 	EnterCriticalSection(&ctrlCommandLockobj);
 	visionCtrlComand = vision.GetControlCommand();
 	LeaveCriticalSection(&ctrlCommandLockobj);
-
+	isRecieveData = 1;
 }
 
 DWORD WINAPI SceneInfoThread(LPVOID pParam)
@@ -330,7 +330,6 @@ void OpenThread()
 {
 	InitializeCriticalSection(&cs);
 	InitializeCriticalSection(&ctrlCommandLockobj);
-	InitializeCriticalSection(&csdata);
 	DataThread = (HANDLE)CreateThread(NULL, 0, DataTransThread, NULL, 0, NULL);
 	SensorThread = (HANDLE)CreateThread(NULL, 0, SensorInfoThread, NULL, 0, NULL);
 	SceneThread = (HANDLE)CreateThread(NULL, 0, SceneInfoThread, NULL, 0, NULL);
@@ -1183,7 +1182,7 @@ void CECATSampleDlg::OnTimer(UINT nIDEvent)
 	//RenderSwitchStatus();
 	//ShowImage();
 	statusStr.Format(_T("x:%d y:%d z:%d y:%d a:%d b:%d time:%d net:%d"), data.X, data.Y, data.Z,
-		data.Yaw, data.Pitch, data.Roll, runTime, controltime);
+		data.Yaw, data.Pitch, data.Roll, runTime, isRecieveData);
 	SetDlgItemText(IDC_EDIT_Pose, statusStr);
 
 	statusStr.Format(_T("1:%.2f 2:%.2f 3:%.2f 4:%.2f 5:%.2f 6:%.2f"), 
