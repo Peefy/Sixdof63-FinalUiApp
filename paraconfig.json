@@ -8,15 +8,15 @@
     "rollScale" : 0.4,         //横滚角增益,可正可负
     "yawScale" : 0.5,          //偏航角增益,可正可负
     "pitchScale" : -0.7,       //俯仰角增益,可正可负
-    "rollFilterLevel" : 2,    //横滚角平滑系数，越大表示平滑程度越高，大于0的整数
-    "yawFilterLevel" : 2,     //偏航角平滑系数，越大表示平滑程度越高，大于0的整数
-    "pitchFilterLevel" : 2,   //俯仰角平滑系数，越大表示平滑程度越高，大于0的整数
-    "xScale" : 0.3,            //x线位移增益,可正可负
-    "yScale" : 0.3,            //y线位移增益,可正可负
-    "zScale" : 0.3,            //z线位移增益,可正可负
-    "xFilterLevel" : 2,        //x线位移平滑系数，越大表示平滑程度越高，大于0的整数
-    "yFilterLevel" : 2,        //y线位移平滑系数，越大表示平滑程度越高，大于0的整数
-    "zFilterLevel" : 2,        //z线位移平滑系数，越大表示平滑程度越高，大于0的整数	  
+    "rollFilterLevel" : 3,    //横滚角平滑系数，越大表示平滑程度越高，大于0的整数
+    "yawFilterLevel" : 3,     //偏航角平滑系数，越大表示平滑程度越高，大于0的整数
+    "pitchFilterLevel" : 3,   //俯仰角平滑系数，越大表示平滑程度越高，大于0的整数
+    "xScale" : 0.08,            //x线位移增益,可正可负
+    "yScale" : 0.08,            //y线位移增益,可正可负
+    "zScale" : 0.08,            //z线位移增益,可正可负
+    "xFilterLevel" : 3,        //x线位移平滑系数，越大表示平滑程度越高，大于0的整数
+    "yFilterLevel" : 3,        //y线位移平滑系数，越大表示平滑程度越高，大于0的整数
+    "zFilterLevel" : 3,        //z线位移平滑系数，越大表示平滑程度越高，大于0的整数	  
     "directAccXScale" :       10.1,    //直控X加速度增益	
     "directAccYScale" :       10.2,    //直控X加速度增益
     "directAccZScale" :       10.3,    //直控X加速度增益	

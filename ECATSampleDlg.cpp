@@ -92,12 +92,6 @@ PhaseMotionControl delta;
 DataPackage data = {0};
 IllusionDataAdapter vision;
 
-#if IS_BIG_MOTION
-
-#else
-IllusionDataAdapter dataAdapter;
-#endif
-
 // 六自由度平台状态
 double pulse_cal[AXES_COUNT];
 double poleLength[AXES_COUNT];
@@ -242,12 +236,12 @@ void VisionDataDeal()
 	vision.Yaw = kalman1_filter(&kalman_yawFilter, vision.Yaw);
 #endif
 	LeaveCriticalSection(&cs);
+	isRecieveData = 1;
 	if (vision.IsRecievedData == false)
 		return;
 	EnterCriticalSection(&ctrlCommandLockobj);
 	visionCtrlComand = vision.GetControlCommand();
 	LeaveCriticalSection(&ctrlCommandLockobj);
-	isRecieveData = 1;
 }
 
 DWORD WINAPI SceneInfoThread(LPVOID pParam)
@@ -1361,6 +1355,10 @@ void CECATSampleDlg::OnBnClickedBtnStopme()
 
 void CECATSampleDlg::OnBnClickedBtnDown()
 {	
+	if (status == SIXDOF_STATUS_ISFALLING || status == SIXDOF_STATUS_BOTTOM)
+	{
+		return;
+	}
 	delta.ReadAllSwitchStatus();
 	if (delta.IsAllAtBottom() == true)
 	{

@@ -79,7 +79,7 @@ using namespace std;
 // 单位mm/s
 #define RISE_VEL 0.1
 // 单位mm/s
-#define DOWN_VEL 0.1
+#define DOWN_VEL 0.08
 
 //平台运动最大角度
 #define VISION_MAX_DEG 15.0
