@@ -1302,7 +1302,8 @@ void CECATSampleDlg::OnBnClickedBtnStart()
 		return;
 	}
 	status = SIXDOF_STATUS_RUN;
-	delta.ServoStop();
+	//delta.ServoStop();
+	delta.StopRiseDownMove();
 	Sleep(100);
 	delta.RenewNowPulse();
 	delta.GetMotionAveragePulse();
@@ -1323,7 +1324,9 @@ void CECATSampleDlg::OnCommandStopme()
 	}
 	closeDataThread = true;
 	Sleep(100);
-	delta.ServoStop();
+	delta.UnlockServo();
+//	delta.ServoStop();
+	delta.StopRiseDownMove();
 	Sleep(100);
 	delta.MoveToZeroPulseNumber();
 	status = SIXDOF_STATUS_READY;
