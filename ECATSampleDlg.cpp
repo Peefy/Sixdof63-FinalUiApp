@@ -592,12 +592,12 @@ void CECATSampleDlg::AppConfigInit()
 	{
 		hpfAccWn = result;
 	}
-	result= config::ParseDoubleJsonFromFile(JSON_PARA_FILE_NAME, JSON_LPF_ACC_WN_KEY);
+	result = config::ParseDoubleJsonFromFile(JSON_PARA_FILE_NAME, JSON_LPF_ACC_WN_KEY);
 	if (result != NULL)
 	{
 		lpfAccWn = result;
 	}
-	result= config::ParseDoubleJsonFromFile(JSON_PARA_FILE_NAME, JSON_ANG_SPD_WN_KEY);
+	result = config::ParseDoubleJsonFromFile(JSON_PARA_FILE_NAME, JSON_ANG_SPD_WN_KEY);
 	if (result != NULL)
 	{
 		hpfAngleSpdWn = result;
