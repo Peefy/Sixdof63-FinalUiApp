@@ -152,11 +152,15 @@ double hpfAngleSpdWn = 0.2;
 int visionCtrlComand = 0;
 int isRecieveData = 0;
 
+double ShockVal = 1.0;
+double ShockHz = 8.0;
+
 CRITICAL_SECTION cs;
-//CRITICAL_SECTION csdata;
 CRITICAL_SECTION ctrlCommandLockobj;
 DataPackageDouble visionData = {0};
 DataPackageDouble lastData = {0};
+
+
 
 DWORD WINAPI DataTransThread(LPVOID pParam)
 {
@@ -241,6 +245,7 @@ void VisionDataDeal()
 		return;
 	EnterCriticalSection(&ctrlCommandLockobj);
 	visionCtrlComand = vision.GetControlCommand();
+	enableShock = vision.IsEanbleShock();
 	LeaveCriticalSection(&ctrlCommandLockobj);
 }
 
@@ -461,12 +466,16 @@ void SixdofControl()
 			vision.SetPoseAngle(vision_roll, vision_pitch, vision_yaw);
 			LeaveCriticalSection(&cs);
 			double pi = 3.1415926;
+			double shockVal = ShockVal;
+			double shockHz = ShockHz;
+			auto shockz = sin(2 * pi * shockHz * t) * shockVal;
 			auto x = RANGE(MyMAFilter(&xFiter, vision_x), -VISION_MAX_XYZ, VISION_MAX_XYZ);
 			auto y = RANGE(MyMAFilter(&yFiter, vision_y), -VISION_MAX_XYZ, VISION_MAX_XYZ);
 			auto z = RANGE(MyMAFilter(&zFiter, vision_z), -VISION_MAX_XYZ, VISION_MAX_XYZ);
 			auto roll = RANGE(MyMAFilter(&rollFiter, vision_roll), -VISION_MAX_DEG, VISION_MAX_DEG);
 			auto pitch = RANGE(MyMAFilter(&pitchFiter, vision_pitch), -VISION_MAX_DEG, VISION_MAX_DEG);
 			auto yaw = RANGE(MyMAFilter(&yawFiter, vision_yaw), -VISION_MAX_DEG, VISION_MAX_DEG);
+			z += (enableShock == true ? shockz : 0);
 			double* pulse_dugu = Control(x, y, z, roll, yaw, pitch);
 			for (auto ii = 0; ii < AXES_COUNT; ++ii)
 			{

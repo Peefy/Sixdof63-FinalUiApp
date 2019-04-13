@@ -202,7 +202,7 @@ float kalman2_filter(kalman2_state *state, float z_measure)
 
 double MyMAFilter(MovingAverageFilterType* This, double InputData)
 {
-	if (This->FilterLevel == 0){
+	if (This->FilterLevel == 0 || This->FilterLevel == 1){
 		return InputData;
 	}
 	uint8_t Index_Temp = 0;

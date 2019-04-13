@@ -190,6 +190,7 @@ public:
 	void SendData(bool iswarning, int status, double x, double y, double z, double roll, double yaw, double pitch);
 	int GetControlCommand() const;
 	bool IsIllusionControl() const;
+	bool IsEanbleShock() const;
 	bool IsRecievedData;
 	double Roll;
 	double Yaw;

@@ -121,6 +121,11 @@ bool IllusionDataAdapter::IsIllusionControl() const
 	return Data.by35 == 999;
 }
 
+bool IllusionDataAdapter::IsEanbleShock() const
+{
+	return false;
+}
+
 void IllusionDataAdapter::SetPoseAngle(double roll, double pitch, double yaw)
 {
 	platformRoll = roll;
