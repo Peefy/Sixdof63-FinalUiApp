@@ -123,7 +123,7 @@ bool IllusionDataAdapter::IsIllusionControl() const
 
 bool IllusionDataAdapter::IsEanbleShock() const
 {
-	return false;
+	return Data.by18 == 1;
 }
 
 void IllusionDataAdapter::SetPoseAngle(double roll, double pitch, double yaw)

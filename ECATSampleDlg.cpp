@@ -152,7 +152,7 @@ double hpfAngleSpdWn = 0.2;
 int visionCtrlComand = 0;
 int isRecieveData = 0;
 
-double ShockVal = 1.0;
+double ShockVal = 10.0;
 double ShockHz = 8.0;
 
 CRITICAL_SECTION cs;
