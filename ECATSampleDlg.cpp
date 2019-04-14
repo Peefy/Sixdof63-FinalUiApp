@@ -160,8 +160,6 @@ CRITICAL_SECTION ctrlCommandLockobj;
 DataPackageDouble visionData = {0};
 DataPackageDouble lastData = {0};
 
-
-
 DWORD WINAPI DataTransThread(LPVOID pParam)
 {
 	while (true)

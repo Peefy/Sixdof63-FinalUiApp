@@ -28,8 +28,8 @@
 #define MOTION_D 0.0
 #define MAX_VEL  2.4
 
-#define RISE_MOTION_P 0.00004
-#define RISE_MOTION_I 0.0000002
+#define RISE_MOTION_P 0.00003
+#define RISE_MOTION_I 0.00000005
 #define RISE_MOTION_D 0.0
 #define RISE_MAX_VEL  0.3
 #endif // IS_BIG_MOTION
