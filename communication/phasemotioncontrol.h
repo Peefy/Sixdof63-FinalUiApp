@@ -149,6 +149,7 @@ public:
 	void StopRiseDownMove();
 	void Rise();
 	void Down();
+	void RiseLittle();
 	void Csp(double * pulse);
 	void PidCsp(double * pulse);
 	void SlowPidCsp(double * pulse);

@@ -1214,8 +1214,8 @@ void CECATSampleDlg::OnTimer(UINT nIDEvent)
 				InitialFlag = 2;
 				Sleep(100);
 				if (lastStartStatus == 0){
-					//delta.ReadAllSwitchStatus();
-					//OnBnClickedBtnRise();
+					//delta.ResetStatus();
+					//delta.RiseLittle();
 				}		
 				else
 				{

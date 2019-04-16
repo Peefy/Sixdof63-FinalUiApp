@@ -239,16 +239,16 @@ void PhaseMotionControl::UnlockServo(int index)
 
 void PhaseMotionControl::Rise()
 {
-	LockServo();
+	//LockServo();
 	for (int i = 0;i < AXES_COUNT;++i)
 	{
 		MyPidParaInit(MotionRisePidControler);
 	}
+	isfalling = false;
+	enableMove = false;
 	Sleep(10);
 	isrising = true;
 	Sleep(10);
-	isfalling = false;
-	enableMove = false;
 	UnlockServo();
 }
 
@@ -264,6 +264,14 @@ void PhaseMotionControl::Down()
 #else
 	AllTestDown();
 #endif	
+}
+
+void PhaseMotionControl::RiseLittle()
+{
+	isrising = false;
+	enableMove = false;
+	isfalling = true;
+	UnlockServo();
 }
 
 double last_pulse[AXES_COUNT] = { 0, 0, 0, 0, 0, 0 };
@@ -407,11 +415,12 @@ void PhaseMotionControl::DDAControlThread()
 		if(isfalling == true)
 		{
 			RenewNowPulse();
-			double pulses[AXES_COUNT] = {-MIDDLE_POS,-MIDDLE_POS,-MIDDLE_POS,-MIDDLE_POS,-MIDDLE_POS,-MIDDLE_POS};
+			auto pulse = -MIDDLE_POS + PULSE_COUNT_RPM; 
+			double pulses[AXES_COUNT] = {pulse, pulse, pulse, pulse, pulse, pulse};
 			SlowPidCsp(pulses);
 			for (int i = 0; i < AXES_COUNT; ++i)
 			{
-				if (abs(NowPluse[i] - 0) <= 1)
+				if (abs(NowPluse[i] - 0) <= eps)
 				{
 					//ServoSingleStop(i);
 					//LockServo(i);
