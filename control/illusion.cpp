@@ -195,18 +195,18 @@ void IllusionDataAdapter::RenewInnerData()
 
 void IllusionDataAdapter::ReadIpAndPortFromFile()
 {
-// 	VisionIp = config::ParseStringJsonFromFile(JSON_FILE_NAME, JSON_UDP_IP_KEY);
-// 	SelfIp = config::ParseStringJsonFromFile(JSON_FILE_NAME, JSON_UDP_SELF_IP_KEY);
-// 	int result = config::ParseIntJsonFromFile(JSON_FILE_NAME, JSON_UDP_PORT_KEY);
-// 	if (result != NULL)
-// 	{
-// 		VisionPort = result;
-// 	}
-// 	result = config::ParseIntJsonFromFile(JSON_FILE_NAME, JSON_UDP_SELF_PORT_KEY);
-// 	if (result != NULL)
-// 	{
-// 		SelfPort = result;
-// 	}
+ 	VisionIp = config::ParseStringJsonFromFile(JSON_FILE_NAME, JSON_UDP_IP_KEY);
+ 	SelfIp = config::ParseStringJsonFromFile(JSON_FILE_NAME, JSON_UDP_SELF_IP_KEY);
+ 	int result = config::ParseIntJsonFromFile(JSON_FILE_NAME, JSON_UDP_PORT_KEY);
+ 	if (result != NULL)
+ 	{
+ 		VisionPort = result;
+ 	}
+ 	result = config::ParseIntJsonFromFile(JSON_FILE_NAME, JSON_UDP_SELF_PORT_KEY);
+ 	if (result != NULL)
+ 	{
+ 		SelfPort = result;
+ 	}
 	udpClient.SetPortAndBind(SelfPort);
 }
 

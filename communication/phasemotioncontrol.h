@@ -86,7 +86,7 @@ using namespace std;
 #define MAX_DEG 15.0
 #define DEG_SCALE 0.01
 //平台运动最大位移
-#define VISION_MAX_XYZ 150.0
+#define VISION_MAX_XYZ 80.0
 #define MAX_XYZ 150.0
 #define XYZ_SCALE 0.1
 // 平台运动最大频率
