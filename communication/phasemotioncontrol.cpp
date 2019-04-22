@@ -24,9 +24,9 @@
 #define RISE_MAX_VEL  0.3
 #else
 #define MOTION_P 0.00006
-#define MOTION_I 0.00000004
+#define MOTION_I 0.00000002
 #define MOTION_D 0.0
-#define MAX_VEL  2.3
+#define MAX_VEL  2.5
 
 #define RISE_MOTION_P 0.00003
 #define RISE_MOTION_I 0.00000005
@@ -300,7 +300,7 @@ void PhaseMotionControl::PidCsp(double * pulse)
 		for (auto i = 0; i < AXES_COUNT; ++i)
 		{
 			pulse[i] = pulse[i] + MIDDLE_POS;
-			pulse[i] = RANGE_V(pulse[i], 0, MAX_POS);
+			pulse[i] = RANGE_V(pulse[i], HALF_RPM_POS, MAX_POS - HALF_RPM_POS);
 			now_vel[i] = MyDeltaPID_Real(&MotionLocationPidControler[i], \
 				NowPluse[i], pulse[i]);
 		}

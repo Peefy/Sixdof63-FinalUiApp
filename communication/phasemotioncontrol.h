@@ -82,11 +82,11 @@ using namespace std;
 #define DOWN_VEL 0.08
 
 //平台运动最大角度
-#define VISION_MAX_DEG 15.0
+#define VISION_MAX_DEG 14.0
 #define MAX_DEG 15.0
 #define DEG_SCALE 0.01
 //平台运动最大位移
-#define VISION_MAX_XYZ 80.0
+#define VISION_MAX_XYZ 50.0
 #define MAX_XYZ 150.0
 #define XYZ_SCALE 0.1
 // 平台运动最大频率
@@ -108,6 +108,7 @@ using namespace std;
 #define MAX_POS (PULSE_COUNT_RPM * MAX_MM / MM_RPM)
 #define MIDDLE_POS (PULSE_COUNT_RPM * RISE_R)
 #define ZERO_POS 0
+#define HALF_RPM_POS (ZERO_POS + PULSE_COUNT_RPM)
 
 #define MAX_POLE_LENGTH (MAX_MM / 2.0)
 
