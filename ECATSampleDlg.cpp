@@ -244,6 +244,7 @@ void VisionDataDeal()
 	EnterCriticalSection(&ctrlCommandLockobj);
 	visionCtrlComand = vision.GetControlCommand();
 	enableShock = vision.IsEanbleShock();
+	ShockHz = vision.GetShockHz();
 	LeaveCriticalSection(&ctrlCommandLockobj);
 }
 
@@ -1329,6 +1330,7 @@ void CECATSampleDlg::OnCommandStopme()
 	{
 		return;
 	}
+	status = SIXDOF_STATUS_READY;
 	closeDataThread = true;
 	Sleep(100);
 	delta.UnlockServo();
@@ -1336,7 +1338,6 @@ void CECATSampleDlg::OnCommandStopme()
 	delta.StopRiseDownMove();
 	Sleep(100);
 	delta.MoveToZeroPulseNumber();
-	status = SIXDOF_STATUS_READY;
 	ResetDefaultData(&data);
 }
 

@@ -126,6 +126,12 @@ bool IllusionDataAdapter::IsEanbleShock() const
 	return Data.by18 == 1;
 }
 
+double IllusionDataAdapter::GetShockHz()
+{
+	return ILLUSION_RANGE(Data.by28 * ILLUSION_OTHER_SCALE, 0, ILLUSION_SHOCK_MAX_AIR_SPEED) 
+		* ILLUSION_SHOCK_MAX_HZ / ILLUSION_SHOCK_MAX_AIR_SPEED;
+}
+
 void IllusionDataAdapter::SetPoseAngle(double roll, double pitch, double yaw)
 {
 	platformRoll = roll;

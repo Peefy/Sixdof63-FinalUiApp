@@ -33,6 +33,7 @@ using namespace std;
 #define ILLUSION_ANGLE_SCALE    0.001
 #define ILLUSION_SPEED_SCALE    (0.001 * 3.1415926 / 180.0)
 #define ILLUSION_ACC_SCALE      0.001
+#define ILLUSION_OTHER_SCALE    0.001
 
 #define DIRECT_ACC_X_SCALE        10.0
 #define DIRECT_ACC_Y_SCALE        10.0
@@ -56,6 +57,9 @@ using namespace std;
 #define EARTH_G 9.8
 
 #define ILLUSION_NORMAL_ACC      (0.02 * EARTH_G)
+
+#define ILLUSION_SHOCK_MAX_AIR_SPEED 100.0
+#define ILLUSION_SHOCK_MAX_HZ        8.0
 
 typedef enum 
 {
@@ -191,6 +195,7 @@ public:
 	int GetControlCommand() const;
 	bool IsIllusionControl() const;
 	bool IsEanbleShock() const;
+	double GetShockHz();
 	bool IsRecievedData;
 	double Roll;
 	double Yaw;
