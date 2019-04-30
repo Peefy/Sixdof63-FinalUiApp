@@ -26,7 +26,7 @@
 #define MOTION_P 0.00006
 #define MOTION_I 0.00000002
 #define MOTION_D 0.0
-#define MAX_VEL  3.5
+#define MAX_VEL  4.0
 
 #define RISE_MOTION_P 0.00002
 #define RISE_MOTION_I 0.00000003
@@ -34,7 +34,7 @@
 #define RISE_MAX_VEL  0.3
 #endif // IS_BIG_MOTION
 
-PID_Type MotionLocationPidControler[AXES_COUNT] = 
+static PID_Type MotionLocationPidControler[AXES_COUNT] = 
 {
 	{ MOTION_P, MOTION_I, MOTION_D, -MAX_VEL, MAX_VEL },
 	{ MOTION_P, MOTION_I, MOTION_D, -MAX_VEL, MAX_VEL },
@@ -44,7 +44,7 @@ PID_Type MotionLocationPidControler[AXES_COUNT] =
 	{ MOTION_P, MOTION_I, MOTION_D, -MAX_VEL, MAX_VEL }
 };
 
-PID_Type MotionRisePidControler[AXES_COUNT] = 
+static PID_Type MotionRisePidControler[AXES_COUNT] = 
 {
 	{ RISE_MOTION_P, RISE_MOTION_I, RISE_MOTION_D, -RISE_MAX_VEL, RISE_MAX_VEL },
 	{ RISE_MOTION_P, RISE_MOTION_I, RISE_MOTION_D, -RISE_MAX_VEL, RISE_MAX_VEL },
