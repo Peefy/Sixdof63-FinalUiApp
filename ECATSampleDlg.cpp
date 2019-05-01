@@ -334,7 +334,6 @@ void CloseThread()
 
 void OpenThread()
 {
-	InitializeCriticalSection(&ctrlCommandLockobj);
 	DataThread = (HANDLE)CreateThread(NULL, 0, DataTransThread, NULL, 0, NULL);
 	SensorThread = (HANDLE)CreateThread(NULL, 0, SensorInfoThread, NULL, 0, NULL);
 	SceneThread = (HANDLE)CreateThread(NULL, 0, SceneInfoThread, NULL, 0, NULL);
