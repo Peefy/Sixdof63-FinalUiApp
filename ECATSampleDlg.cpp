@@ -155,8 +155,8 @@ int isRecieveData = 0;
 double ShockVal = 10.0;
 double ShockHz = 8.0;
 
-CRITICAL_SECTION cs;
-CRITICAL_SECTION ctrlCommandLockobj;
+mutex cs;
+mutex ctrlCommandLockobj;
 DataPackageDouble visionData = {0};
 DataPackageDouble lastData = {0};
 
@@ -173,10 +173,12 @@ DWORD WINAPI SensorInfoThread(LPVOID pParam)
 {
 	while (true)
 	{
-		EnterCriticalSection(&cs);
-		vision.SendData(false, status, data.X / 10.0, data.Y / 10.0, 
-			data.Z / 10.0, data.Roll / 100.0, data.Yaw / 100.0, data.Pitch / 100.0);	
-		LeaveCriticalSection(&cs);
+		if(cs.try_lock())
+		{
+			vision.SendData(false, status, data.X / 10.0, data.Y / 10.0, 
+				data.Z / 10.0, data.Roll / 100.0, data.Yaw / 100.0, data.Pitch / 100.0);	
+			cs.unlock();
+		}
 		Sleep(SENSOR_THREAD_DELAY);
 	}
 	return 0;
@@ -184,68 +186,74 @@ DWORD WINAPI SensorInfoThread(LPVOID pParam)
 
 void CECATSampleDlg::JudgeControlCommand()
 {
-	EnterCriticalSection(&ctrlCommandLockobj);
-	switch (visionCtrlComand)
+	if (ctrlCommandLockobj.try_lock())
 	{
-	case ILLUSION_CTL_CMD_START_INT32:
-		// Rise
-		if (status == SIXDOF_STATUS_BOTTOM || status == SIXDOF_STATUS_ISFALLING)
+		switch (visionCtrlComand)
 		{
-			OnBnClickedBtnRise();
-		}
-		else if (status == SIXDOF_STATUS_MIDDLE || status == SIXDOF_STATUS_RUN)
-		{
+		case ILLUSION_CTL_CMD_START_INT32:
+			// Rise
+			if (status == SIXDOF_STATUS_BOTTOM || status == SIXDOF_STATUS_ISFALLING)
+			{
+				OnBnClickedBtnRise();
+			}
+			else if (status == SIXDOF_STATUS_MIDDLE || status == SIXDOF_STATUS_RUN)
+			{
+				OnCommandStopme();
+			}
+			break;
+		case ILLUSION_CTL_CMD_STOP_INT32:
+			// Down
+			OnBnClickedBtnDown();
+			break;
+		case ILLUSION_CTL_CMD_CONNECT_INT32:
+			// Run
+			OnBnClickedBtnStart();
+			break;
+		case ILLUSION_CTL_CMD_DISCONNECT_INT32:
+			// StopAndMiddle
 			OnCommandStopme();
+			break;
+		case ILLUSION_CTL_CMD_PAUSE_INT32:
+			// StopAndMiddle
+			OnCommandStopme();
+			break;
+		case ILLUSION_CTL_CMD_RECOVER_INT32:
+			// Run
+			OnBnClickedBtnStart();
+			break;
+		default:
+			break;
 		}
-		break;
-	case ILLUSION_CTL_CMD_STOP_INT32:
-		// Down
-		OnBnClickedBtnDown();
-		break;
-	case ILLUSION_CTL_CMD_CONNECT_INT32:
-		// Run
-		OnBnClickedBtnStart();
-		break;
-	case ILLUSION_CTL_CMD_DISCONNECT_INT32:
-		// StopAndMiddle
-		OnCommandStopme();
-		break;
-	case ILLUSION_CTL_CMD_PAUSE_INT32:
-		// StopAndMiddle
-		OnCommandStopme();
-		break;
-	case ILLUSION_CTL_CMD_RECOVER_INT32:
-		// Run
-		OnBnClickedBtnStart();
-		break;
-	default:
-		break;
+		visionCtrlComand = 0;
+		ctrlCommandLockobj.unlock();
 	}
-	visionCtrlComand = 0;
-	LeaveCriticalSection(&ctrlCommandLockobj);
 }
 
 void VisionDataDeal()
 {	
-	EnterCriticalSection(&cs);
-	vision.RenewData();	
+	if(cs.try_lock())
+	{
+		vision.RenewData();	
 #if IS_USE_KALMAN_FILTER 1
-	vision.X = kalman1_filter(&kalman_xFilter, vision.X);
-	vision.Y = kalman1_filter(&kalman_yFilter, vision.Y);
-	vision.Z = kalman1_filter(&kalman_zFilter, vision.Z);
-	vision.Roll = kalman1_filter(&kalman_rollFilter, vision.Roll);
-	vision.Pitch = kalman1_filter(&kalman_pitchFilter, vision.Pitch);
-	vision.Yaw = kalman1_filter(&kalman_yawFilter, vision.Yaw);
+		vision.X = kalman1_filter(&kalman_xFilter, vision.X);
+		vision.Y = kalman1_filter(&kalman_yFilter, vision.Y);
+		vision.Z = kalman1_filter(&kalman_zFilter, vision.Z);
+		vision.Roll = kalman1_filter(&kalman_rollFilter, vision.Roll);
+		vision.Pitch = kalman1_filter(&kalman_pitchFilter, vision.Pitch);
+		vision.Yaw = kalman1_filter(&kalman_yawFilter, vision.Yaw);
 #endif
-	LeaveCriticalSection(&cs);
+		cs.unlock();
+	}
 	isRecieveData = 1;
 	if (vision.IsRecievedData == false)
 		return;
-	EnterCriticalSection(&ctrlCommandLockobj);
-	visionCtrlComand = vision.GetControlCommand();
-	enableShock = vision.IsEanbleShock();
-	ShockHz = vision.GetShockHz();
-	LeaveCriticalSection(&ctrlCommandLockobj);
+	if (ctrlCommandLockobj.try_lock())
+	{
+		visionCtrlComand = vision.GetControlCommand();
+		enableShock = vision.IsEanbleShock();
+		ShockHz = vision.GetShockHz();
+		ctrlCommandLockobj.unlock();
+	}
 }
 
 DWORD WINAPI SceneInfoThread(LPVOID pParam)
@@ -326,7 +334,6 @@ void CloseThread()
 
 void OpenThread()
 {
-	InitializeCriticalSection(&cs);
 	InitializeCriticalSection(&ctrlCommandLockobj);
 	DataThread = (HANDLE)CreateThread(NULL, 0, DataTransThread, NULL, 0, NULL);
 	SensorThread = (HANDLE)CreateThread(NULL, 0, SensorInfoThread, NULL, 0, NULL);
@@ -455,25 +462,27 @@ void SixdofControl()
 		// 模拟视景
 		else
 		{
-			EnterCriticalSection(&cs);
-			auto vision_x = vision.X;
-			auto vision_y = vision.Y;
-			auto vision_z = vision.Z;
-			auto vision_roll = vision.Roll;
-			auto vision_pitch = vision.Pitch;
-			auto vision_yaw = vision.Yaw;
-			vision.SetPoseAngle(vision_roll, vision_pitch, vision_yaw);
-			LeaveCriticalSection(&cs);
+			if (cs.try_lock())
+			{
+				visionData.X = vision.X;
+				visionData.Y = vision.Y;
+				visionData.Z = vision.Z;
+				visionData.Roll = vision.Roll;
+				visionData.Pitch = vision.Pitch;
+				visionData.Yaw = vision.Yaw;
+				vision.SetPoseAngle(visionData.Roll, visionData.Pitch, visionData.Yaw);
+				cs.unlock();
+			}
 			double pi = 3.1415926;
 			double shockVal = ShockVal;
 			double shockHz = ShockHz;
 			auto shockz = sin(2 * pi * shockHz * t) * shockVal;
-			auto x = RANGE(MyMAFilter(&xFiter, vision_x), -VISION_MAX_XYZ, VISION_MAX_XYZ);
-			auto y = RANGE(MyMAFilter(&yFiter, vision_y), -VISION_MAX_XYZ, VISION_MAX_XYZ);
-			auto z = RANGE(MyMAFilter(&zFiter, vision_z), -VISION_MAX_XYZ, VISION_MAX_XYZ);
-			auto roll = RANGE(MyMAFilter(&rollFiter, vision_roll), -VISION_MAX_DEG, VISION_MAX_DEG);
-			auto pitch = RANGE(MyMAFilter(&pitchFiter, vision_pitch), -VISION_MAX_DEG, VISION_MAX_DEG);
-			auto yaw = RANGE(MyMAFilter(&yawFiter, vision_yaw), -VISION_MAX_DEG, VISION_MAX_DEG);
+			auto x = RANGE(MyMAFilter(&xFiter, visionData.X), -VISION_MAX_XYZ, VISION_MAX_XYZ);
+			auto y = RANGE(MyMAFilter(&yFiter, visionData.Y), -VISION_MAX_XYZ, VISION_MAX_XYZ);
+			auto z = RANGE(MyMAFilter(&zFiter, visionData.Z), -VISION_MAX_XYZ, VISION_MAX_XYZ);
+			auto roll = RANGE(MyMAFilter(&rollFiter, visionData.Roll), -VISION_MAX_DEG, VISION_MAX_DEG);
+			auto pitch = RANGE(MyMAFilter(&pitchFiter, visionData.Pitch), -VISION_MAX_DEG, VISION_MAX_DEG);
+			auto yaw = RANGE(MyMAFilter(&yawFiter, visionData.Yaw), -VISION_MAX_DEG, VISION_MAX_DEG);
 			z += (enableShock == true ? shockz : 0);
 			double* pulse_dugu = Control(x, y, z, roll, yaw, pitch);
 			for (auto ii = 0; ii < AXES_COUNT; ++ii)
