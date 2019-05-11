@@ -31,7 +31,7 @@ using namespace std;
 
 #define ILLUSION_XYZ_SCALE      0.001
 #define ILLUSION_ANGLE_SCALE    0.001
-#define ILLUSION_SPEED_SCALE    (0.001 * 3.1415926 / 180.0)
+#define ILLUSION_SPEED_SCALE    (0.002 * 3.1415926 / 180.0)
 #define ILLUSION_ACC_SCALE      0.001
 #define ILLUSION_OTHER_SCALE    0.001
 
@@ -49,7 +49,7 @@ using namespace std;
 
 #define ILLUSION_RANGE(x, min, max)   (((x)<(min) ? (min) : ( (x)>(max) ? (max):(x) )))
 #define ILLUSION_MAX_ANGLE_DEG     180
-#define ILLUSION_MAX_ANGLE_SPEED   1.5
+#define ILLUSION_MAX_ANGLE_SPEED   0.12
 #define ILLUSION_MAX_XYZ_ACC       50
 
 #define ILLUSION_IS_DIRECT_CONTROL_INT32   999 
