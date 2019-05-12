@@ -2,6 +2,8 @@
 #ifndef __APP_CONFIG_H_
 #define __APP_CONFIG_H_
 
+#define PROGRAM_NAME "Sixdof63Dialog"
+
 #define IS_63_PLATFORM
 //#define IS_81_PLATFORM
 //#define IS_84_PLATFORM

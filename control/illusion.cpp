@@ -118,7 +118,7 @@ int IllusionDataAdapter::GetControlCommand() const
 
 bool IllusionDataAdapter::IsIllusionControl() const
 {
-	return Data.by35 == 999;
+	return Data.by35 == ILLUSION_IS_DIRECT_CONTROL_INT32;
 }
 
 bool IllusionDataAdapter::IsEanbleShock() const

@@ -50,7 +50,7 @@ using namespace std;
 #define ILLUSION_RANGE(x, min, max)   (((x)<(min) ? (min) : ( (x)>(max) ? (max):(x) )))
 #define ILLUSION_MAX_ANGLE_DEG     180
 #define ILLUSION_MAX_ANGLE_SPEED   0.12
-#define ILLUSION_MAX_XYZ_ACC       50
+#define ILLUSION_MAX_XYZ_ACC       20
 
 #define ILLUSION_IS_DIRECT_CONTROL_INT32   999 
 
