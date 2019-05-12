@@ -26,6 +26,8 @@ void UdpClient::SetPortAndBind(int port)
 	addr.sin_port = htons(port);
 	addr.sin_addr.S_un.S_addr = INADDR_ANY;
 	bind(s, (sockaddr*)&addr, sizeof(addr));
+	timeval tv = {0, 100};
+	setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(timeval));
 }
 
 void UdpClient::SendTo(int port, const char * ipstring, const char* bytes, int length)
@@ -41,6 +43,8 @@ int UdpClient::RecieveFrom(char* bytes)
 {
 	int nSockAddrSize = sizeof(addrClient);
 	int len = recvfrom(s, bytes, 1024, 0, (sockaddr*)&addrClient, &nSockAddrSize);
+	if (len <= SOCKET_ERROR)
+		return 0;
 	return len;
 }
 
