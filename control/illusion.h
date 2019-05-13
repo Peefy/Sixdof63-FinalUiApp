@@ -49,7 +49,7 @@ using namespace std;
 
 #define ILLUSION_RANGE(x, min, max)   (((x)<(min) ? (min) : ( (x)>(max) ? (max):(x) )))
 #define ILLUSION_MAX_ANGLE_DEG     180
-#define ILLUSION_MAX_ANGLE_SPEED   1.2
+#define ILLUSION_MAX_ANGLE_SPEED   1.0
 #define ILLUSION_MAX_XYZ_ACC       20
 
 #define ILLUSION_IS_DIRECT_CONTROL_INT32   999 
