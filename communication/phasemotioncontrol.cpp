@@ -26,7 +26,7 @@
 #define MOTION_P 0.00006
 #define MOTION_I 0.00000002
 #define MOTION_D 0.0
-#define MAX_VEL  4.0
+#define MAX_VEL  8.0
 
 #define RISE_MOTION_P 0.00002
 #define RISE_MOTION_I 0.00000003

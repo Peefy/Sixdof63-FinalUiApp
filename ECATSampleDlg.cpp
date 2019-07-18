@@ -1443,12 +1443,12 @@ void CECATSampleDlg::OnBnClickedButtonTest()
 	auto pitchval = RANGE(GetCEditNumber(IDC_EDIT_PITCH_VAL), -MAX_DEG_PITCH, MAX_DEG_PITCH);
 	auto yawval = RANGE(GetCEditNumber(IDC_EDIT_YAW_VAL), -MAX_DEG_YAW, MAX_DEG_YAW);
 	//频率单位1hz
-	auto xhz = RANGE(GetCEditNumber(IDC_EDIT_X_HZ), 0, MAX_HZ);
-	auto yhz = RANGE(GetCEditNumber(IDC_EDIT_Y_HZ), 0, MAX_HZ);
-	auto zhz = RANGE(GetCEditNumber(IDC_EDIT_Z_HZ), 0, MAX_HZ);
-	auto rollhz = RANGE(GetCEditNumber(IDC_EDIT_ROLL_HZ), 0, MAX_HZ);
-	auto pitchhz = RANGE(GetCEditNumber(IDC_EDIT_PITCH_HZ), 0, MAX_HZ);
-	auto yawhz = RANGE(GetCEditNumber(IDC_EDIT_YAW_HZ), 0, MAX_HZ);
+	auto xhz = RANGE(GetCEditNumber(IDC_EDIT_X_HZ), 0, 10);
+	auto yhz = RANGE(GetCEditNumber(IDC_EDIT_Y_HZ), 0, 10);
+	auto zhz = RANGE(GetCEditNumber(IDC_EDIT_Z_HZ), 0, 10);
+	auto rollhz = RANGE(GetCEditNumber(IDC_EDIT_ROLL_HZ), 0, 10);
+	auto pitchhz = RANGE(GetCEditNumber(IDC_EDIT_PITCH_HZ), 0, 10);
+	auto yawhz = RANGE(GetCEditNumber(IDC_EDIT_YAW_HZ), 0, 10);
 
 	auto xphase = RANGE(GetCEditNumber(IDC_EDIT_X_PHASE), 0, MAX_PHASE);
 	auto yphase = RANGE(GetCEditNumber(IDC_EDIT_Y_PHASE), 0, MAX_PHASE);
