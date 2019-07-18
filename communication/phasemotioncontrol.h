@@ -45,7 +45,7 @@ using namespace std;
 #define MAX_XYZ 600
 #define XYZ_SCALE 0.1
 // 平台运动最大频率
-#define MAX_HZ 10
+#define MAX_HZ 5
 #define MAX_PHASE 360
 
 #define MAX_XYZ_X      150
@@ -90,7 +90,7 @@ using namespace std;
 #define MAX_XYZ 150.0
 #define XYZ_SCALE 0.1
 // 平台运动最大频率
-#define MAX_HZ 10
+#define MAX_HZ 5
 #define MAX_PHASE 360
 
 #define MAX_XYZ_X      150.0
