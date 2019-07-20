@@ -23,13 +23,13 @@
 #define RISE_MOTION_D 0.0
 #define RISE_MAX_VEL  0.3
 #else
-#define MOTION_P 0.00006
-#define MOTION_I 0.00000002
+#define MOTION_P 0.0002
+#define MOTION_I 0.000002
 #define MOTION_D 0.0
 #define MAX_VEL  8.0
 
-#define RISE_MOTION_P 0.00002
-#define RISE_MOTION_I 0.00000003
+#define RISE_MOTION_P 0.00004
+#define RISE_MOTION_I 0.0000002
 #define RISE_MOTION_D 0.0
 #define RISE_MAX_VEL  0.3
 #endif // IS_BIG_MOTION
@@ -300,7 +300,7 @@ void PhaseMotionControl::PidCsp(double * pulse)
 		for (auto i = 0; i < AXES_COUNT; ++i)
 		{
 			pulse[i] = pulse[i] + MIDDLE_POS;
-			pulse[i] = RANGE_V(pulse[i], HALF_RPM_POS, MAX_POS - HALF_RPM_POS);
+			pulse[i] = RANGE_V(pulse[i], 0, MAX_POS + HALF_RPM_POS);
 			now_vel[i] = MyDeltaPID_Real(&MotionLocationPidControler[i], \
 				NowPluse[i], pulse[i]);
 		}

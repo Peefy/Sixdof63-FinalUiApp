@@ -126,7 +126,7 @@ double chartRollValPoint[CHART_POINT_NUM] = { 0 };
 double chartPitchValPoint[CHART_POINT_NUM] = { 0 };
 double chartYawValPoint[CHART_POINT_NUM] = { 0 };
 
-double runTime = 0;
+int runTime = 0;
 double chartTime = 0;
 double controltime = 0;
 
@@ -347,13 +347,13 @@ void SensorRead()
 
 void SixdofControl()
 {
-	static double deltat = 0.026;
+	static double deltat = 0.031;
+	DWORD start_time = 0;
+	start_time = GetTickCount();
+	delta.RenewNowPulse();
 	Sleep(10);
 	if(closeDataThread == false)
 	{	
-		DWORD start_time = 0;
-		start_time = GetTickCount();
-		delta.RenewNowPulse();
 		auto delay = SIXDOF_CONTROL_DELEY;
 		double dis[AXES_COUNT] = {0};
 		// 正弦测试运动
@@ -501,6 +501,7 @@ void SixdofControl()
 			t += deltat;
 			delta.PidCsp(dis);
 		}
+
 		Sleep(delay);
 		DWORD end_time = GetTickCount();
 		runTime = end_time - start_time;
@@ -1443,12 +1444,12 @@ void CECATSampleDlg::OnBnClickedButtonTest()
 	auto pitchval = RANGE(GetCEditNumber(IDC_EDIT_PITCH_VAL), -MAX_DEG_PITCH, MAX_DEG_PITCH);
 	auto yawval = RANGE(GetCEditNumber(IDC_EDIT_YAW_VAL), -MAX_DEG_YAW, MAX_DEG_YAW);
 	//频率单位1hz
-	auto xhz = RANGE(GetCEditNumber(IDC_EDIT_X_HZ), 0, 10);
-	auto yhz = RANGE(GetCEditNumber(IDC_EDIT_Y_HZ), 0, 10);
-	auto zhz = RANGE(GetCEditNumber(IDC_EDIT_Z_HZ), 0, 10);
-	auto rollhz = RANGE(GetCEditNumber(IDC_EDIT_ROLL_HZ), 0, 10);
-	auto pitchhz = RANGE(GetCEditNumber(IDC_EDIT_PITCH_HZ), 0, 10);
-	auto yawhz = RANGE(GetCEditNumber(IDC_EDIT_YAW_HZ), 0, 10);
+	auto xhz = RANGE(GetCEditNumber(IDC_EDIT_X_HZ), 0, MAX_HZ);
+	auto yhz = RANGE(GetCEditNumber(IDC_EDIT_Y_HZ), 0, MAX_HZ);
+	auto zhz = RANGE(GetCEditNumber(IDC_EDIT_Z_HZ), 0, MAX_HZ);
+	auto rollhz = RANGE(GetCEditNumber(IDC_EDIT_ROLL_HZ), 0, MAX_HZ);
+	auto pitchhz = RANGE(GetCEditNumber(IDC_EDIT_PITCH_HZ), 0, MAX_HZ);
+	auto yawhz = RANGE(GetCEditNumber(IDC_EDIT_YAW_HZ), 0, MAX_HZ);
 
 	auto xphase = RANGE(GetCEditNumber(IDC_EDIT_X_PHASE), 0, MAX_PHASE);
 	auto yphase = RANGE(GetCEditNumber(IDC_EDIT_Y_PHASE), 0, MAX_PHASE);

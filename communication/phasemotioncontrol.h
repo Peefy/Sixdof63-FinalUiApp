@@ -90,15 +90,15 @@ using namespace std;
 #define MAX_XYZ 150.0
 #define XYZ_SCALE 0.1
 // 平台运动最大频率
-#define MAX_HZ 10
+#define MAX_HZ 5.0
 #define MAX_PHASE 360
 
-#define MAX_XYZ_X      150.0
-#define MAX_XYZ_Y      150.0
-#define MAX_XYZ_Z      150.0
-#define MAX_DEG_PITCH  15
-#define MAX_DEG_ROLL   15
-#define MAX_DEG_YAW    15
+#define MAX_XYZ_X      240.0
+#define MAX_XYZ_Y      240.0
+#define MAX_XYZ_Z      240.0
+#define MAX_DEG_PITCH  24.0
+#define MAX_DEG_ROLL   24.0
+#define MAX_DEG_YAW    24.0
 
 #define MAX_XYZ_ZERO_POS    30
 #define MAX_DEG_ZERO_POS    3
