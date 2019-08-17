@@ -347,7 +347,7 @@ void SensorRead()
 
 void SixdofControl()
 {
-	static double deltat = 0.031;
+	static double deltat = 0.026;
 	DWORD start_time = 0;
 	start_time = GetTickCount();
 	delta.RenewNowPulse();
