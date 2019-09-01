@@ -14,9 +14,9 @@
 
 #define IS_FILE_RECORD 1
 
-#define Z9_ROLL_SCALE  3.0
-#define Z9_PITCH_SCALE 3.0
-#define Z9_YAW_SCALE   3.0
+#define Z9_ROLL_SCALE  2.0
+#define Z9_PITCH_SCALE 2.0
+#define Z9_YAW_SCALE   2.0
 
 UdpClient udpClient = UdpClient(UDP_SELF_PORT);
 #if IS_USE_WASHOUT
