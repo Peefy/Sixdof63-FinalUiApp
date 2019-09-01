@@ -14,6 +14,10 @@
 
 #define IS_FILE_RECORD 1
 
+#define Z9_ROLL_SCALE  3.0
+#define Z9_PITCH_SCALE 3.0
+#define Z9_YAW_SCALE   3.0
+
 UdpClient udpClient = UdpClient(UDP_SELF_PORT);
 #if IS_USE_WASHOUT
 WashoutAlgorithm flightwashout;
@@ -132,6 +136,11 @@ double IllusionDataAdapter::GetShockHz()
 		* ILLUSION_SHOCK_MAX_HZ / ILLUSION_SHOCK_MAX_AIR_SPEED;
 }
 
+int IllusionDataAdapter::GetPlaneType()
+{
+	return Data.uPlaneType;
+}
+
 void IllusionDataAdapter::SetPoseAngle(double roll, double pitch, double yaw)
 {
 	platformRoll = roll;
@@ -196,6 +205,26 @@ void IllusionDataAdapter::RenewInnerData()
 		Roll += Data.uAccebx_deg * ILLUSION_ANGLE_SCALE * directAngleRollScale;
 		Pitch += Data.uAcceby_deg * ILLUSION_ANGLE_SCALE * directAnglePitchScale;
 		Yaw += Data.uAccebz_deg * ILLUSION_ANGLE_SCALE * directAngleYawScale;
+	}
+	switch (planeType)
+	{
+	case PLANE_TYPE_Z9:
+		Roll *= Z9_ROLL_SCALE;
+		Pitch *= Z9_PITCH_SCALE;
+		Yaw *= Z9_YAW_SCALE;
+		break;
+	case PLANE_TYPE_S30:
+		break;
+	case PLANE_TYPE_SU27:
+		break;
+	case PLANE_TYPE_SU30:
+		break;
+	case PLANE_TYPE_J10:
+		break;
+	case PLANE_TYPE_J15:
+		break;
+	default:
+		break;
 	}
 }
 

@@ -196,6 +196,7 @@ public:
 	bool IsIllusionControl() const;
 	bool IsEanbleShock() const;
 	double GetShockHz();
+	int GetPlaneType();
 	bool IsRecievedData;
 	double Roll;
 	double Yaw;
