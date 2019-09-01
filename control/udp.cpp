@@ -4,6 +4,8 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+#define TIMEOUT_MS 60
+
 UdpClient::UdpClient(int port)
 {
 	WSADATA data;
@@ -26,7 +28,7 @@ void UdpClient::SetPortAndBind(int port)
 	addr.sin_port = htons(port);
 	addr.sin_addr.S_un.S_addr = INADDR_ANY;
 	bind(s, (sockaddr*)&addr, sizeof(addr));
-	timeval tv = {0, 100};
+	timeval tv = {0, TIMEOUT_MS};
 	setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(timeval));
 }
 

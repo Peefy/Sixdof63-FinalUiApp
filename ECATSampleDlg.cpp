@@ -154,6 +154,7 @@ int isRecieveData = 0;
 
 double ShockVal = 10.0;
 double ShockHz = 8.0;
+double pitchPositiveScale = 1.2;
 
 mutex cs;
 mutex ctrlCommandLockobj;
@@ -347,7 +348,7 @@ void SensorRead()
 
 void SixdofControl()
 {
-	static double deltat = 0.026;
+	static double deltat = 0.031;
 	DWORD start_time = 0;
 	start_time = GetTickCount();
 	delta.RenewNowPulse();
@@ -482,6 +483,9 @@ void SixdofControl()
 			auto roll = RANGE(MyMAFilter(&rollFiter, visionData.Roll), -VISION_MAX_DEG, VISION_MAX_DEG);
 			auto pitch = RANGE(MyMAFilter(&pitchFiter, visionData.Pitch), -VISION_MAX_DEG, VISION_MAX_DEG);
 			auto yaw = RANGE(MyMAFilter(&yawFiter, visionData.Yaw), -VISION_MAX_DEG, VISION_MAX_DEG);
+			if (pitch > 0){
+				pitch = pitch * pitchPositiveScale;
+			}
 			z += (enableShock == true ? shockz : 0);
 			double* pulse_dugu = Control(x, y, z, roll, yaw, pitch);
 			for (auto ii = 0; ii < AXES_COUNT; ++ii)
