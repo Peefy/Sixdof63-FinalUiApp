@@ -45,7 +45,7 @@ using namespace std;
 #define DIRECT_ANGLE_PITCH_SCALE  1.0
 #define DIRECT_ANGLE_YAW_SCALE    2.0
 
-#define ILLUSION_DT 0.047
+#define ILLUSION_DT 0.0155
 
 #define ILLUSION_RANGE(x, min, max)   (((x)<(min) ? (min) : ( (x)>(max) ? (max):(x) )))
 #define ILLUSION_MAX_ANGLE_DEG     180

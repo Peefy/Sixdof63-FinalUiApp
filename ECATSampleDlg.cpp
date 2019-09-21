@@ -54,7 +54,7 @@ using namespace std;
 #define TIMER_MS 10
 
 #define SIXDOF_CONTROL_DELEY 1
-#define SCENE_THREAD_DELAY 20
+#define SCENE_THREAD_DELAY 15
 #define SENSOR_THREAD_DELAY 20
 #define DATA_BUFFER_THREAD_DELAY 20
 
@@ -127,6 +127,7 @@ double chartPitchValPoint[CHART_POINT_NUM] = { 0 };
 double chartYawValPoint[CHART_POINT_NUM] = { 0 };
 
 int runTime = 0;
+int netTime = 0;
 double chartTime = 0;
 double controltime = 0;
 
@@ -158,6 +159,7 @@ double pitchPositiveScale = 1.2;
 
 mutex cs;
 mutex ctrlCommandLockobj;
+DataPackageDouble vData = {0};
 DataPackageDouble visionData = {0};
 DataPackageDouble lastData = {0};
 
@@ -174,12 +176,8 @@ DWORD WINAPI SensorInfoThread(LPVOID pParam)
 {
 	while (true)
 	{
-		if(cs.try_lock())
-		{
-			vision.SendData(false, status, data.X / 10.0, data.Y / 10.0, 
-				data.Z / 10.0, data.Roll / 100.0, data.Yaw / 100.0, data.Pitch / 100.0);	
-			cs.unlock();
-		}
+		vision.SendData(false, status, data.X / 10.0, data.Y / 10.0, 
+			data.Z / 10.0, data.Roll / 100.0, data.Yaw / 100.0, data.Pitch / 100.0);	
 		Sleep(SENSOR_THREAD_DELAY);
 	}
 	return 0;
@@ -232,9 +230,16 @@ void CECATSampleDlg::JudgeControlCommand()
 
 void VisionDataDeal()
 {	
+	vision.RenewData();	
 	if(cs.try_lock())
 	{
-		vision.RenewData();	
+		vData.X = vision.X;
+		vData.Y = vision.Y;
+		vData.Z = vision.Z;
+		vData.Roll = vision.Roll;
+		vData.Pitch = vision.Pitch;
+		vData.Yaw = vision.Yaw;
+		vision.SetPoseAngle(vData.Roll, vData.Pitch, vData.Yaw);
 #if IS_USE_KALMAN_FILTER 1
 		vision.X = kalman1_filter(&kalman_xFilter, vision.X);
 		vision.Y = kalman1_filter(&kalman_yFilter, vision.Y);
@@ -265,7 +270,7 @@ DWORD WINAPI SceneInfoThread(LPVOID pParam)
 		VisionDataDeal();
 		Sleep(SCENE_THREAD_DELAY);
 		DWORD endtime = GetTickCount();
-		controltime = endtime - starttime;
+		netTime = endtime - starttime;
 	}
 	return 0;
 }
@@ -352,7 +357,7 @@ void SixdofControl()
 	DWORD start_time = 0;
 	start_time = GetTickCount();
 	delta.RenewNowPulse();
-	Sleep(10);
+	Sleep(5);
 	if(closeDataThread == false)
 	{	
 		auto delay = SIXDOF_CONTROL_DELEY;
@@ -464,13 +469,7 @@ void SixdofControl()
 		{
 			if (cs.try_lock())
 			{
-				visionData.X = vision.X;
-				visionData.Y = vision.Y;
-				visionData.Z = vision.Z;
-				visionData.Roll = vision.Roll;
-				visionData.Pitch = vision.Pitch;
-				visionData.Yaw = vision.Yaw;
-				vision.SetPoseAngle(visionData.Roll, visionData.Pitch, visionData.Yaw);
+				visionData = vData;
 				cs.unlock();
 			}
 			double pi = 3.1415926;
@@ -1196,8 +1195,8 @@ void CECATSampleDlg::OnTimer(UINT nIDEvent)
 	//RenderScene();
 	//RenderSwitchStatus();
 	//ShowImage();
-	statusStr.Format(_T("x:%d y:%d z:%d y:%d a:%d b:%d time:%d net:%d"), data.X, data.Y, data.Z,
-		data.Yaw, data.Pitch, data.Roll, runTime, isRecieveData);
+	statusStr.Format(_T("x:%d y:%d z:%d y:%d a:%d b:%d net:%d run:%d"), data.X, data.Y, data.Z,
+		data.Yaw, data.Pitch, data.Roll, netTime, runTime);
 	SetDlgItemText(IDC_EDIT_Pose, statusStr);
 
 	statusStr.Format(_T("1:%.2f 2:%.2f 3:%.2f 4:%.2f 5:%.2f 6:%.2f"), 

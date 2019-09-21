@@ -71,6 +71,7 @@ typedef struct
 	double Pitch;
 	//µ¥Î»1¶È
 	double Yaw;
+
 }DataPackageDouble;
 
 template<typename T>
