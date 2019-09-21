@@ -195,13 +195,13 @@
     <ClCompile Include="control\udp.cpp">
       <Filter>control</Filter>
     </ClCompile>
-    <ClCompile Include="StdAfx.cpp">
-      <Filter>communication</Filter>
-    </ClCompile>
     <ClCompile Include="config\recordpath.cpp">
       <Filter>config</Filter>
     </ClCompile>
     <ClCompile Include="control\washout.cpp">
+      <Filter>control</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
       <Filter>control</Filter>
     </ClCompile>
   </ItemGroup>

@@ -482,7 +482,7 @@ void SixdofControl()
 			auto roll = RANGE(MyMAFilter(&rollFiter, visionData.Roll), -VISION_MAX_DEG, VISION_MAX_DEG);
 			auto pitch = RANGE(MyMAFilter(&pitchFiter, visionData.Pitch), -VISION_MAX_DEG, VISION_MAX_DEG);
 			auto yaw = RANGE(MyMAFilter(&yawFiter, visionData.Yaw), -VISION_MAX_DEG, VISION_MAX_DEG);
-			if (pitch > 0){
+			if (pitch < 0){
 				pitch = pitch * pitchPositiveScale;
 			}
 			z += (enableShock == true ? shockz : 0);
